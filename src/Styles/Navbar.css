@@ -1,0 +1,37 @@
+.navbar{
+    background: rgb(226, 195, 195);
+    width: 100vw;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    z-index: 12;
+}
+
+.logo-div{
+    margin-left: 10%;
+    margin-right: 5%;
+    cursor: pointer;
+}
+
+.logo{
+    width: 50px;
+}
+
+.nav-buttons{
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-buttons span{
+    cursor: pointer;
+}
+.nav-buttons span:hover{
+    border: 2px solid black;
+    padding: 5px;
+    border-radius: 5px;
+}

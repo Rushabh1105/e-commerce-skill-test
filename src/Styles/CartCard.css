@@ -1,0 +1,27 @@
+
+
+.cart-card{
+    width: 80%;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+
+.cart-item-image{
+    width: 100px;
+    height: 100px;
+}
+
+.cart-item-image img{
+    width: 100%;
+    height: 100%;
+}
+
+.cart-item-info{
+    margin-left: 30px;
+}
