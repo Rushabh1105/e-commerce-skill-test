@@ -9,8 +9,9 @@ import LoadingSpinner from '../Component/Loading';
 function Product() {
   
   const { products, loading } = useSelector(productSelector);
+  console.log(products)
   const [filterData, setFilterData] = useState(products);
-
+  
   
 
   useEffect(() => {

@@ -4,14 +4,14 @@ import '../Styles/ProductDetail.css';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCartThunk, deleteProductThunk, getProductByIdThunk, productSelector } from '../Redux/ProductReducer';
+import { addToCartThunk, getProductByIdThunk, productSelector } from '../Redux/ProductReducer';
 import LoadingSpinner from '../Component/Loading';
 import { toast } from 'react-toastify';
 
 function ProductDetail() {
 
     const { id } = useParams();
-    const { product, loading, error, products } = useSelector(productSelector);
+    const { loading, error, products } = useSelector(productSelector);
 
     const [data, setData] = useState({});
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ function ProductDetail() {
             }
             setData(d);   
         }
-    }, [loading, id, products]);
+    }, [loading, id, products, navigate]);
 
     const addToCart = () => {
         dispatch(addToCartThunk(data));

@@ -17,12 +17,10 @@ function Cart() {
     if(!loading){
       setCartData(cart)
     }
-  }, [loading, cart])
-
-  if(error){
-    navigate('/');
-  }
-
+    if(error){
+      navigate('/')
+    }
+  }, [loading, cart, error, navigate])
 
   return (
     <div className='cart'>
