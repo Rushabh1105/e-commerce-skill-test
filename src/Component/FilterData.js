@@ -1,15 +1,19 @@
+// Import react modules
 import React from 'react';
+// Importing styling
 import '../Styles/FilterData.css'
 
+// Filter Data compoentn
 function FilterData(props) {
-
+    // get function from props;
     const { filterByCategory } = props;
 
-
+    // Return JSX
   return (
     <div className='filter-container'>
         <div className='category'>
             <h4>Filter By Categories</h4>
+            {/* Filter by electronics category */}
             <div>
                 <input 
                     type='radio' 
@@ -20,7 +24,7 @@ function FilterData(props) {
                 />
                 <label for='electronics'>Electronics</label>
             </div>
-
+            {/* Filter by  mens category*/}
             <div>
                 <input 
                     type='radio' 
@@ -31,7 +35,7 @@ function FilterData(props) {
                 />
                 <label for='men'>Men</label>
             </div>
-
+            {/* Filter by womens category */}
             <div>
                 <input 
                     type='radio' 
@@ -42,7 +46,7 @@ function FilterData(props) {
                 />
                 <label for='women'>Women</label>
             </div>
-
+            {/* Filter by jewellary category */}
             <div>
                 <input 
                     type='radio' 
@@ -53,7 +57,7 @@ function FilterData(props) {
                 />
                 <label for='jewellery'>Jewellery</label>
             </div>
-
+            {/* claer all filters */}
             <div>
                 <input 
                     type='radio' 
@@ -62,9 +66,10 @@ function FilterData(props) {
                     name='category'
                     onClick={() => {filterByCategory('none')}}
                 />
-                <label for='clear'>Clear</label>
+                <label for='clear'><b>Clear</b></label>
             </div>
             <br />
+            {/* Filter By proce */}
             <h4>Filter By Price</h4>
             <div>
                 <input 

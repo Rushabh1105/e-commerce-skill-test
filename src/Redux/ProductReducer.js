@@ -1,10 +1,15 @@
+// import modules from redux toolkit
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+// import toast component
 import { toast } from "react-toastify";
+// import from redux persist
 import { persistReducer } from 'redux-persist';
+// import storage
 import storage from 'redux-persist/lib/storage';
 
-
+// base url of backend
 const baseURL = 'https://my-json-server.typicode.com/Rushabh1105/product-data'
+// app initial state
 const initialState = {
     products: [],
     cart: [],
@@ -13,6 +18,7 @@ const initialState = {
     product: null,
 };
 
+// get products data from url
 export const getProductsThunk = createAsyncThunk('products/getProducts', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/products`);
@@ -27,6 +33,7 @@ export const getProductsThunk = createAsyncThunk('products/getProducts', async(a
     }
 });
 
+// get product by id from server
 export const getProductByIdThunk = createAsyncThunk('products/getProductById', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/products/${args}`);
@@ -37,6 +44,7 @@ export const getProductByIdThunk = createAsyncThunk('products/getProductById', a
     }
 });
 
+// add new product to data
 export const addNewProductThunk = createAsyncThunk('product/addnew', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/products`, {
@@ -52,6 +60,7 @@ export const addNewProductThunk = createAsyncThunk('product/addnew', async(args,
     }
 });
 
+// delete a product
 export const deleteProductThunk = createAsyncThunk('product/delete', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/products`, {
@@ -66,6 +75,7 @@ export const deleteProductThunk = createAsyncThunk('product/delete', async(args,
     }
 })
 
+// get all cart items
 export const getCartThunk = createAsyncThunk('cart/getProducts', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/cart`);
@@ -76,6 +86,7 @@ export const getCartThunk = createAsyncThunk('cart/getProducts', async(args, thu
     }
 })
 
+// add product to cart
 export const addToCartThunk = createAsyncThunk('cart/addProduct', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/cart`, {
@@ -90,6 +101,7 @@ export const addToCartThunk = createAsyncThunk('cart/addProduct', async(args, th
     }
 })
 
+// remove a product from cart
 export const removeFromCartThunk = createAsyncThunk('cart/removeProduct', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/cart/${args.id}`, {
@@ -103,6 +115,7 @@ export const removeFromCartThunk = createAsyncThunk('cart/removeProduct', async(
     }
 })
 
+// update a product details
 export const updateProductThunk = createAsyncThunk('/product/updateProduct', async(args, thunkAPI) => {
     try {
         const response = await fetch(`${baseURL}/cart/${args.id}`, {
@@ -116,37 +129,44 @@ export const updateProductThunk = createAsyncThunk('/product/updateProduct', asy
     }
 })
 
+// creat a reducer slice for product
 const productSlice = createSlice({
     name: 'product',
     initialState: initialState,
     reducers: {
+        // to set the product to data
         setProduct: (state, action) => {
             state.product = action.payload;
         }
     },
     extraReducers: (builder) => {
+        // to show loading status
         builder.addCase(getProductsThunk.pending, (state) => {
             state.loading = true;
             state.error = null;
             toast.loading('Fetching data...')
         })
+        // append data to products array in state
         .addCase(getProductsThunk.fulfilled, (state, action) => {
             state.loading = false;
             state.products = [...action.payload];
             toast.dismiss();
             toast.success('Fetched the data...')
         })
+        // show API error message
         .addCase(getProductsThunk.rejected, (state, action) => {
             state.error = 'unable to fetch data';
             state.products = [];
             state.loading = false;
             toast.error(state.error);
         })
+        // show loading status
         .addCase(getProductByIdThunk.pending, (state) => {
             state.loading = true;
             state.error = null;
             toast.loading('Fetching Products');
         })
+        // get product data and show API success message
         .addCase(getProductByIdThunk.fulfilled, (state, action) => {
             state.loading = false;
             state.error = null;
@@ -154,36 +174,44 @@ const productSlice = createSlice({
             toast.dismiss();
             toast.success('Fetched data')
         })
+        // Show API error message
         .addCase(getProductByIdThunk.rejected, (state, action) => {
             state.loading = false;
             state.product = null;
             toast.error('Something went wrong')
         })
+        // append new project to products array
         .addCase(addNewProductThunk.fulfilled, (state, action) => {
             state.products = [...state.products, action.payload];
             state.error = null;
             state.loading = false;
         })
+        // show API error message
         .addCase(addNewProductThunk.rejected, (state) => {
             state.error = 'Something went wrong';
             state.loading = false;
         })
+        // show loading status
         .addCase(getCartThunk.pending, (state, action) => {
             state.error = null;
             state.loading = true;
         })
+        // assign cart data to cart state
         .addCase(getCartThunk.fulfilled, (state, action) => {
             state.error = null;
             state.loading = false;
             state.cart = [...action.payload];
         })
+        // show API error message or handle the error
         .addCase(getCartThunk.rejected, (state, action) => {
             state.error = action.payload;
             state.loading = false;
         })
+        // show API loading message
         .addCase(addToCartThunk.pending, (state, action) => {
             toast.loading('Adding to the cart')
         })
+        // add product to cart
         .addCase(addToCartThunk.fulfilled, (state, action) => {
             state.error = null;
             state.loading = false;
@@ -197,6 +225,7 @@ const productSlice = createSlice({
             }
             state.loading = false;
         })
+        // handle API error
         .addCase(addToCartThunk.rejected, (state, action) => {
             const prod = {...action.payload};
             const crt = [...state.cart];
@@ -213,6 +242,7 @@ const productSlice = createSlice({
             
             state.loading = false;
         })
+        // delete product from products state
         .addCase(deleteProductThunk.fulfilled, (state, action) => {
             const productIndex = state.products.findIndex((p) => p.id === action.payload.id)
             if(productIndex !== -1){
@@ -220,6 +250,7 @@ const productSlice = createSlice({
             }
             toast.warn('Product removed')
         })
+        // handle delete product API error
         .addCase(deleteProductThunk.rejected, (state, action) => {
             const productIndex = state.products.findIndex((p) => p.id === action.payload.id)
             if(productIndex !== -1){
@@ -229,6 +260,7 @@ const productSlice = createSlice({
                 toast.error('Something went wrong')
             }
         })
+        // remove product from cart state
         .addCase(removeFromCartThunk.fulfilled, (state, action) => {
             const cartIndex = state.cart.findIndex((p) => p.id === action.payload.id);
             if(cartIndex !== -1){
@@ -238,6 +270,7 @@ const productSlice = createSlice({
                 toast.warn('Something went wrong')
             }
         })
+        // handle remover product API error
         .addCase(removeFromCartThunk.rejected, (state, action) => {
             const cartIndex = state.cart.findIndex((p) => p.id === action.payload.id);
             if(cartIndex !== -1){
@@ -247,6 +280,7 @@ const productSlice = createSlice({
                 toast.warn('Something went wrong')
             }
         })
+        // update a single product in products state
         .addCase(updateProductThunk.fulfilled, (state, action) => {
             const productIndex = state.products.findIndex((p) => p.id === action.payload.id);
             if(productIndex === -1){
@@ -256,6 +290,7 @@ const productSlice = createSlice({
                 toast.success('Product Updated...')
             }
         })
+        // handle update product API error
         .addCase(updateProductThunk.rejected, (state, action) => {
             const productIndex = state.products.findIndex((p) => p.id === action.payload.id);
             if(productIndex === -1){
