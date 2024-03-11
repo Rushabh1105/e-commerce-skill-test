@@ -1,50 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import data from '../data.json';
 import ProductCard from '../Component/ProductCard';
 import '../Styles/Product.css'
 import FilterData from '../Component/FilterData';
+import { useSelector } from 'react-redux';
+import { productSelector } from '../Redux/ProductReducer';
+import LoadingSpinner from '../Component/Loading';
 
 function Product() {
+  
+  const { products, loading } = useSelector(productSelector);
+  const [filterData, setFilterData] = useState(products);
 
-  const [filterData, setFilterData] = useState([]);
+  
+
   useEffect(() => {
-    setFilterData(data.products)
-  }, [])
+    if(!loading){
+      setFilterData(products);
+    }
+  }, [loading, products])
 
   function filterByCategory(category){
     if(category === 'none'){
-      setFilterData(data.products)
+      setFilterData(products)
       return;
     }
 
     if(category === 'price'){
-      const d = [...data.products];
+      const d = [...products];
       d.sort((a, b) => a.price - b.price);
       setFilterData(d);
       return;
     }
 
-    const d = data.products.filter((product) => product.category === category);
+    const d = products.filter((product) => product.category === category);
     setFilterData(d)
   }
  
-
-  // console.log(filterData)
+  // console.log(products)
 
   return (
     <div className='product'>
-      <div className='product-list'>
-        {
-          filterData.map((product, idx) => (
-            <ProductCard data={product} key={idx}/>
-          ))
-        }
-      </div>
-      <div className='filters'>
-        <FilterData 
-          filterByCategory={filterByCategory}
-        />
-      </div>
+      {
+        loading?
+          <LoadingSpinner />:
+          <>
+            <div className='product-list'>
+              {
+                filterData.map((product, idx) => (
+                  <ProductCard data={product} key={idx}/>
+                ))
+              }
+            </div>
+            <div className='filters'>
+              <FilterData 
+                filterByCategory={filterByCategory}
+              />
+            </div>
+          </>
+      }
     </div>
   )
 }

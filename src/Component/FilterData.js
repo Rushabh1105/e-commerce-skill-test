@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../Styles/FilterData.css'
 
 function FilterData(props) {
 
     const { filterByCategory } = props;
-    // for price filter
-    const [price, setPrice] = useState(100)
 
 
   return (
     <div className='filter-container'>
-        <h3>Filter</h3>
         <div className='category'>
-            <h4>Categories & Price</h4>
+            <h4>Filter By Categories</h4>
             <div>
                 <input 
                     type='radio' 
@@ -68,6 +65,7 @@ function FilterData(props) {
                 <label for='clear'>Clear</label>
             </div>
             <br />
+            <h4>Filter By Price</h4>
             <div>
                 <input 
                     type='radio' 
